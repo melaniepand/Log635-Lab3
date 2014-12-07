@@ -42,11 +42,11 @@ public class Data {
 	}
 
 	public void setDensity(double density) {
-		this.density = density;
+		this.density = Utils.transform(density, 10.0);
 	}
 
 	public void setFixedAcidity(double fixedAcidity) {
-		this.fixedAcidity = fixedAcidity;
+		this.fixedAcidity = Utils.transform(fixedAcidity, 10.0);
 	}
 
 	public double getVolatileAcidity() {
@@ -70,7 +70,7 @@ public class Data {
 	}
 
 	public void setResidualSugar(double residualSugar) {
-		this.residualSugar = residualSugar;
+		this.residualSugar = Utils.transform(residualSugar, 100.0);
 	}
 
 	public double getChlorides() {
@@ -86,7 +86,7 @@ public class Data {
 	}
 
 	public void setFreeSulfurDioxide(double freeSulfurDioxide) {
-		this.freeSulfurDioxide = freeSulfurDioxide;
+		this.freeSulfurDioxide = Utils.transform(freeSulfurDioxide, 1000.0);
 	}
 
 	public double getTotalSulfurDioxide() {
@@ -94,7 +94,7 @@ public class Data {
 	}
 
 	public void setTotalSulfurDioxide(double totalSulfurDioxide) {
-		this.totalSulfurDioxide = totalSulfurDioxide;
+		this.totalSulfurDioxide = Utils.transform(totalSulfurDioxide, 100.0);
 	}
 
 	public double getpH() {
@@ -102,7 +102,7 @@ public class Data {
 	}
 
 	public void setpH(double pH) {
-		this.pH = pH;
+		this.pH = Utils.transform(pH, 10.0);
 	}
 
 	public double getSulphates() {
@@ -118,7 +118,7 @@ public class Data {
 	}
 
 	public void setAlcohol(double alcohol) {
-		this.alcohol = alcohol;
+		this.alcohol = Utils.transform(alcohol, 10.0);
 	}
 
 	public int getQuality() {

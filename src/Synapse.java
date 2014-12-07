@@ -10,10 +10,15 @@ class Synapse {
 	Synapse(Neuron f, Neuron t) {
 		from = f;
 		to = t;
-		weight = random.nextDouble() / 5.0;
+		weight = RandomClamped();
 		data = 0.0;
 		f.getOutlinks().add(this);
 		t.getInlinks().add(this);
+	}
+
+	private double RandomClamped() {
+		Random random = new Random();
+		return random.nextDouble() * 2 - 1;
 	}
 
 	public double getData() {

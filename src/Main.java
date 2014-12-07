@@ -4,12 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) {
-		// args = new String[1];
-		// args[0] = "/ ../donnees_sources.csv";
 
 		if (args.length == 0 || args[0].isEmpty()) {
 			System.out.println(" ../donnees_sources.csv");
@@ -18,7 +17,7 @@ public class Main {
 		ArrayList<Data> lstData = new ArrayList<Data>();
 		lstData = getDataFromFile(args[0]);
 		System.out.println("Donnees recupere : " + lstData.size());
-		System.out.println("premirèe ligne: " + lstData.get(0).printData());
+		// System.out.println("premirèe ligne: " + lstData.get(0).printData());
 		int listMidSize = lstData.size() / 2;
 
 		// Appliquer l�entrainement sur la list de donn�e ( index 0 �
@@ -26,7 +25,7 @@ public class Main {
 		ArrayList<Data> lstDataTrainning = new ArrayList<Data>();
 		for (int cpt = 0; cpt < listMidSize; cpt++)
 			lstDataTrainning.add(lstData.get(cpt));
-		NeuralNet nn = new NeuralNet(11, 1, 9, 11);
+		NeuralNet nn = new NeuralNet(11, 1, 4, 6);
 		NeuralNetTrainer nnt = new NeuralNetTrainer(nn);
 		nnt.trainNetwork(lstDataTrainning);
 		//
@@ -35,6 +34,22 @@ public class Main {
 		for (int cpt = listMidSize; cpt < lstData.size(); cpt++)
 			lstValidationTrainning.add(lstData.get(cpt));
 		nnt.ValidNetwork(lstValidationTrainning);
+
+		// Faire un test
+		System.out
+				.println("***************Systeme prêt pour test:*******************");
+		System.out.println("Entrez le chemin vers votre fichier");
+		System.out
+		.println("Assurer vous que le fichier est a la racine du projet et renseigner juste le nom du fichier");
+		Scanner sc = new Scanner(System.in);
+		String path = sc.nextLine();
+
+		ArrayList<Data> lstValidationTest = getDataFromFile(path);
+
+		nnt.ValidNetwork(lstValidationTest);
+
+		System.out.println("***************Terminer *******************");
+
 	}
 	private static ArrayList<Data> getDataFromFile(String pFilePath) {
 		ArrayList<Data> tempDonnees = new ArrayList<Data>();

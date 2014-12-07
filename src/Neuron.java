@@ -13,7 +13,7 @@ public class Neuron {
 	private Double output;
 	private Double delta;
 	private Double momentum = 0.9;
-	private Double learningRate = 0.3;
+	private Double learningRate = 0.2;
 
 	public Neuron(int pNumInputs, String nlabel) {
 
@@ -39,15 +39,16 @@ public class Neuron {
 		sum = 0.0;
 		for (int i = 0; i < getInlinks().size(); i++)
 			sum += inlinks.get(i).getFrom().getOutput()
-			* inlinks.get(i).getWeight();
+					* inlinks.get(i).getWeight();
 
-		output = 1.0 / (1.0 + Math.exp(-sum)); // sigmoid function
+		output = Utils.defimalFormat(1.0 / (1.0 + Math.exp(-sum))); // sigmoid
+		// function
 
 	}
 
 	public void computeBackpropDelta(double d) // for an output neuron
 	{
-		delta = (d - output) * output * (1.0 - output);
+		delta = Utils.defimalFormat((d - output) * output * (1.0 - output));
 
 	}
 
@@ -57,7 +58,7 @@ public class Neuron {
 
 		for (int i = 0; i < outlinks.size(); i++)
 			errorSum += outlinks.get(i).getTo().getDelta()
-			* outlinks.get(i).getWeight();
+					* outlinks.get(i).getWeight();
 		delta = output * (1.0 - output) * errorSum;
 
 	}

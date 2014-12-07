@@ -17,7 +17,8 @@ public class NeuralNetTrainer {
 		System.out.println("*************");
 		System.out.println("Training on " + pData.size() + " data");
 		System.out.println("*************");
-		while (true) {
+		while (epoch <= 200) {
+			System.out.println("Epoch:" + epoch);
 			epoch++;
 			errorCount = 0;
 			for (int cpt = 0; cpt < pData.size(); cpt++) {
@@ -35,24 +36,27 @@ public class NeuralNetTrainer {
 				lstInputTrainning.add(pData.get(cpt).getVolatileAcidity());
 				int qualite = pData.get(cpt).getQuality();
 				ArrayList<Double> expectedOutputs = new ArrayList<Double>();
-				expectedOutputs.add((double) qualite);
+				expectedOutputs.add(Utils.transform(qualite, 10.0));
 
 				neutralNet.initInputs(lstInputTrainning);
 				neutralNet.propagate();
 
-				Double Error = neutralNet.getOutputError(neutralNet.getOutput()
-						.get(0), sigmoid(expectedOutputs.get(0)));
+				Double Error = Utils.defimalFormat(neutralNet.getOutputError(
+						neutralNet.getOutput().get(0),
+						Utils.transform(qualite, 10.0)));
 
 				// Afficher l'erreur a chaque itération
-				System.out.println("Valeur Entrée:" + lstInputTrainning);
-				System.out.println("Valeur Sotie:" + neutralNet.getOutput());
-				System.out.println("Valeur qualité:" + expectedOutputs.get(0));
-				System.out.println("Valeur obtenue:"
-						+ logit(neutralNet.getOutput().get(0)));
-				System.out.println("Erreur:" + Error);
+				// System.out.println("Valeur Entrée:" + lstInputTrainning);
+				// System.out.println("Valeur Sotie:" + neutralNet.getOutput());
+				// System.out.println("Valeur qualité:"
+				// + transformQuality(qualite));
+				// System.out.println("Valeur obtenue:"
+				// + logit(neutralNet.getOutput().get(0)));
+				// System.out.println("Erreur:" + Error);
 
 				// Ajutster ls poids
-				Double expectedValue = sigmoid(expectedOutputs.get(0));
+				Double expectedValue = Utils
+						.defimalFormat(sigmoid(expectedOutputs.get(0)));
 				expectedOutputs.clear();
 				expectedOutputs.add(expectedValue);
 				neutralNet.bpAdjustWeights(expectedOutputs);
@@ -60,17 +64,16 @@ public class NeuralNetTrainer {
 				int desiredOutput = pData.get(cpt).getQuality();
 				Double neuralOutput = logit(neutralNet.getOutput().get(0));
 
-				if (desiredOutput - neuralOutput != 0) {
-					System.out.println(desiredOutput + " / " + neuralOutput);
+				if (desiredOutput - neuralOutput != 0)
+					// System.out.println(desiredOutput + " / " + neuralOutput);
 					errorCount++;
-				}
-				// System.out.println("desired Output : " + desiredOutput +
-				// " / Output : " + neuralOutput);
 
 				expectedOutputs.clear();
 				lstInputTrainning.clear();
 			}
-			System.out.println(errorCount);
+			System.out.println("Je  deviens intelligent .....");
+			System.out
+					.println("Je  vous fais signe dès que je suis prêt ^_^ !...");
 			// System.out.println("% training valid " + (errorCount /
 			// pData.size()) * 100 );
 			if (errorCount < 2000) {
@@ -81,10 +84,10 @@ public class NeuralNetTrainer {
 		}
 
 	}
-
 	public void ValidNetwork(ArrayList<Data> pData) {
 
 		ArrayList<Double> lstInputTrainning = new ArrayList<Double>();
+
 		// System.out.println("*************");
 		// System.out.println("Validation on " + pData.size() + " data");
 		// System.out.println("*************");
@@ -101,20 +104,33 @@ public class NeuralNetTrainer {
 			lstInputTrainning.add(pData.get(cpt).getSulphates());
 			lstInputTrainning.add(pData.get(cpt).getTotalSulfurDioxide());
 			lstInputTrainning.add(pData.get(cpt).getVolatileAcidity());
-			// int qualite = pData.get(cpt).getQuality();
-			// ArrayList<Double> outputs = new ArrayList<Double>();
-			// outputs.add((double) qualite);
 
-			// neutralNet.learnPattern(lstInputTrainning, outputs);
+			int qualite = pData.get(cpt).getQuality();
+			ArrayList<Double> expectedOutputs = new ArrayList<Double>();
+			expectedOutputs.add(Utils.transform(qualite, 10.0));
 
-			// Double Error = neutralNet.getOutputError(sigmoid((double)
-			// qualite),
-			// outputs.get(0));
+			neutralNet.initInputs(lstInputTrainning);
+			neutralNet.propagate();
 
-			// if (neuralOutput == qualite)
-			// System.out.println("output " + neuralOutput);
-			// outputs.clear();
-			// lstInputTrainning.clear();
+			Double Error = Utils.defimalFormat(neutralNet.getOutputError(
+					neutralNet.getOutput().get(0),
+					Utils.transform(qualite, 10.0)));
+
+			System.out.println("Validation :" + cpt);
+			System.out.println("Qualité attendue:" + qualite);
+			System.out.println("Qualité obtenue:"
+					+ Utils.normalValue(neutralNet.getOutput().get(0)));
+
+			// Pourcentage
+			if (qualite - neutralNet.getOutput().get(0) > 0)
+				System.out.println("Erreur = " + neutralNet.getOutput().get(0)
+						/ qualite * 100 + " %");
+			else
+				System.out.println("Erreur = " + qualite
+						/ neutralNet.getOutput().get(0) * 100 + " %");
+
+			expectedOutputs.clear();
+			lstInputTrainning.clear();
 		}
 
 	}
@@ -124,24 +140,15 @@ public class NeuralNetTrainer {
 	}
 	private Double logit(Double nb) {
 		Double res = 0.0;
-		System.out.println("Dsans logbin:");
-		System.out.println("nb:" + nb);
+		// System.out.println("Dsans logbin:");
+		// System.out.println("nb:" + nb);
 
 		res = Math.log(nb / (1.0 - nb));
-		System.out.println("nb:" + res);
+		// System.out.println("nb:" + res);
 
 		return 2 * res;
 	}
 
-	// private Double void(){
-	//
-	// ouble mon_nombre = 123.9857133413413;
-	// DecimalFormat df = new DecimalFormat("########.00");
-	// String str = df.format(mon_nombre);
-	// mon_nombre = Double.parseDouble(str.replace(',', '.'));
-	// System.out.println(mon_nombre);
-	//
-	// }
 	private double clampOutput(double pOutput) {
 		return pOutput * 10.0;
 	}
