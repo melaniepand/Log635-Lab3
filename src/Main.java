@@ -9,9 +9,11 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
-
+		args = new String[1];
+		args[0] = "/donnees_sources.csv";
+		
 		if (args.length == 0 || args[0].isEmpty()) {
-			System.out.println(" ../donnees_sources.csv");
+			System.out.println("not find ../donnees_sources.csv");
 			System.exit(0);
 		}
 		ArrayList<Data> lstData = new ArrayList<Data>();
