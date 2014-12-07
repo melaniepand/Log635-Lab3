@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class NeuralNet {
 
-	private final int bias = -1;
+	private final int bias = 1;
 	private int numInputs;
 	private int numOutputs;
 	private int numHiddenLayers;
@@ -70,7 +70,7 @@ public class NeuralNet {
 		for (int i = 0; i < data.size(); i++)
 			layers.get(0).getNeurons().get(i).setOutput(data.get(i));
 		layers.get(0).getNeurons().get(layers.get(0).getNumNeurons() - 1)
-				.setOutput(1.0); // bias
+		.setOutput(1.0); // bias
 	}
 
 	public void learnPattern(ArrayList<Double> iS, ArrayList<Double> oS) {

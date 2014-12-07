@@ -42,11 +42,13 @@ public class Neuron {
 			* inlinks.get(i).getWeight();
 
 		output = 1.0 / (1.0 + Math.exp(-sum)); // sigmoid function
+
 	}
 
 	public void computeBackpropDelta(double d) // for an output neuron
 	{
 		delta = (d - output) * output * (1.0 - output);
+
 	}
 
 	public void computeBackpropDelta() // for a hidden neuron
@@ -57,6 +59,7 @@ public class Neuron {
 			errorSum += outlinks.get(i).getTo().getDelta()
 			* outlinks.get(i).getWeight();
 		delta = output * (1.0 - output) * errorSum;
+
 	}
 
 	public void computeWeight() {
@@ -68,6 +71,7 @@ public class Neuron {
 			inlinks.get(i).setData(newData);
 			Double newWeight = inlinks.get(i).getWeight() + newData;
 			inlinks.get(i).setData(newWeight);
+
 		}
 
 	}

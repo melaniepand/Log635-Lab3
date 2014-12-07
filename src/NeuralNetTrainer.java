@@ -52,6 +52,9 @@ public class NeuralNetTrainer {
 				System.out.println("Erreur:" + Error);
 
 				// Ajutster ls poids
+				Double expectedValue = sigmoid(expectedOutputs.get(0));
+				expectedOutputs.clear();
+				expectedOutputs.add(expectedValue);
 				neutralNet.bpAdjustWeights(expectedOutputs);
 
 				int desiredOutput = pData.get(cpt).getQuality();
@@ -127,8 +130,18 @@ public class NeuralNetTrainer {
 		res = Math.log(nb / (1.0 - nb));
 		System.out.println("nb:" + res);
 
-		return res;
+		return 2 * res;
 	}
+
+	// private Double void(){
+	//
+	// ouble mon_nombre = 123.9857133413413;
+	// DecimalFormat df = new DecimalFormat("########.00");
+	// String str = df.format(mon_nombre);
+	// mon_nombre = Double.parseDouble(str.replace(',', '.'));
+	// System.out.println(mon_nombre);
+	//
+	// }
 	private double clampOutput(double pOutput) {
 		return pOutput * 10.0;
 	}
